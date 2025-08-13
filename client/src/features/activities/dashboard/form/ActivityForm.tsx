@@ -1,14 +1,16 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import type { FormEvent } from "react";
 import { useActivties } from "../../../../lib/hooks/useActivities";
+import { useNavigate, useParams } from "react-router";
 
-type Props = {
-	activity?: Activity;
-	closeForm: () => void;
-};
+export default function ActivityForm() {
+	const { createActivity, updateActivity, activity, isActivityLoading } =
+		useActivties(useParams().id);
+	const navigate = useNavigate();
 
-export default function ActivityForm({ activity, closeForm }: Props) {
-	const { createActivity, updateActivity } = useActivties();
+	if (isActivityLoading) {
+		return <Typography>Loading...</Typography>;
+	}
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -21,10 +23,13 @@ export default function ActivityForm({ activity, closeForm }: Props) {
 		if (activity) {
 			data.id = activity.id;
 			await updateActivity.mutateAsync(data as unknown as Activity);
-			closeForm();
+			navigate(`/activities/${activity.id}`);
 		} else {
-			await createActivity.mutateAsync(data as unknown as Activity);
-			closeForm();
+			createActivity.mutate(data as unknown as Activity, {
+				onSuccess: (id) => {
+					navigate(`/activities/${id}`);
+				},
+			});
 		}
 	};
 
@@ -34,7 +39,7 @@ export default function ActivityForm({ activity, closeForm }: Props) {
 				variant='h5'
 				gutterBottom
 				color='primary'>
-				Create activity
+				{activity ? "Edit Activity" : "Create Activity"}
 			</Typography>
 			<Box
 				component='form'
@@ -86,7 +91,7 @@ export default function ActivityForm({ activity, closeForm }: Props) {
 					justifyContent='end'
 					gap={3}>
 					<Button
-						onClick={closeForm}
+						onClick={() => {}}
 						color='inherit'>
 						Cancel
 					</Button>
@@ -94,7 +99,9 @@ export default function ActivityForm({ activity, closeForm }: Props) {
 						type='submit'
 						color='success'
 						variant='contained'
-						disabled={updateActivity.isPending || createActivity.isPending}>
+						disabled={
+							updateActivity.isPending || createActivity.isPending
+						}>
 						Submit
 					</Button>
 				</Box>
