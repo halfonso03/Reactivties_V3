@@ -16,6 +16,7 @@ public class ActivitiesController() : BaseApiController
     [HttpGet]
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
+        await Task.Delay(1000);
         return await Mediator.Send(new GetActivityList.Query());
     }
     
