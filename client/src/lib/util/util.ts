@@ -1,5 +1,5 @@
-import { DateArg, format } from "date-fns";
+import { format } from "date-fns";
 
-export function formatDate(date: DateArg<Date>) {
+export function formatDate(date: Date) {
 	return format(date, "dd MMM yyyy h:mm a");
 }

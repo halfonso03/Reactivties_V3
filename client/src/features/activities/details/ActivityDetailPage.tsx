@@ -1,15 +1,14 @@
 import { Grid2, Typography } from "@mui/material";
 import { useParams } from "react-router";
-import { useActivties } from "../../../lib/hooks/useActivities";
+import { useActivities } from "../../../lib/hooks/useActivities";
 import ActivityDetailsHeader from "./ActivityDetailsHeader";
 import ActivityDetailsInfo from "./ActivityDetailsInfo";
 import ActivityDetailsChat from "./ActivityDetailsChat";
 import ActivityDetailsSidebar from "./ActivityDetailsSidebar";
 
-
 export default function ActivityDetailPage() {
 	const { id } = useParams();
-	const { activity, isActivityLoading } = useActivties(id);
+	const { activity, isActivityLoading } = useActivities(id);
 
 	if (isActivityLoading) {
 		return <Typography>Loading...</Typography>;
