@@ -2,8 +2,11 @@ using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -25,6 +28,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddCors();
 builder.Services.AddMediatR(x =>
 {
@@ -41,6 +45,15 @@ builder.Services.AddIdentityApiEndpoints<User>(opt =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("IsActivityHost", policy =>
+    {
+        policy.Requirements.Add(new IsHostRequirement());
+    });
+});
+
+builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
