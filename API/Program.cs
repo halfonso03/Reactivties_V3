@@ -6,6 +6,7 @@ using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(opt => 
+builder.Services.AddControllers(opt =>
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     opt.Filters.Add(new AuthorizeFilter(policy));
@@ -29,6 +30,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 });
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+
 builder.Services.AddCors();
 builder.Services.AddMediatR(x =>
 {
@@ -54,7 +57,7 @@ builder.Services.AddAuthorization(opt =>
 });
 
 builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
-
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
 // HA - not used
