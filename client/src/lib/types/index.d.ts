@@ -14,6 +14,12 @@ type Activity = {
 	isHost: boolean;
 	hostId: string;
 	hostDisplayedName: string;
+	hostImageUrl: string;
+};
+
+type Photo = {
+	id: string;
+	url: string;
 };
 
 type Profile = {
