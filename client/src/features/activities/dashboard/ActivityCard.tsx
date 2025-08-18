@@ -12,19 +12,19 @@ import {
 } from "@mui/material";
 import { Link } from "react-router";
 import { formatDate } from "../../../lib/util/util";
-import type { Activity } from "../../../lib/types";
+import AvatarPopover from "../../../app/shared/components/AvatarPopover";
 
 type Props = {
 	activity: Activity;
 };
 
 export default function ActivityCard({ activity }: Props) {
-	const isHost = false;
-	const isGoing = false;
-	const label = isHost ? "You are hosting" : "You are going";
-	const isCancelled = false;
-	const color = isHost ? "secondary" : isGoing ? "warning" : "default";
-
+	const label = activity.isHost ? "You are hosting" : "You are going";
+	const color = activity.isHost
+		? "secondary"
+		: activity.isGoing
+		? "warning"
+		: "default";
 	return (
 		<Card
 			elevation={3}
@@ -42,7 +42,10 @@ export default function ActivityCard({ activity }: Props) {
 					}}
 					subheader={
 						<>
-							Hosted by <Link to={"/profiles/bob"}></Link>
+							Hosted by{" "}
+							<Link to={`/profiles/${activity.hostId}`}>
+								{activity.hostDisplayedName}
+							</Link>
 						</>
 					}
 				/>
@@ -51,14 +54,15 @@ export default function ActivityCard({ activity }: Props) {
 					flexDirection={"column"}
 					gap={2}
 					mr={2}>
-					{(isHost || isGoing) && (
+					{(activity.isHost || activity.isGoing) && (
 						<Chip
 							label={label}
 							color={color}
+							variant='outlined'
 							sx={{ borderRadius: 2 }}
 						/>
 					)}
-					{isCancelled && (
+					{activity.isCancelled && (
 						<Chip
 							label={"Cancelled"}
 							color='error'
@@ -97,7 +101,11 @@ export default function ActivityCard({ activity }: Props) {
 						py: 3,
 						pl: 3,
 					}}>
-					Attendees
+					{activity.attendees.map((att) => (
+						<AvatarPopover
+							key={att.id}
+							profile={att}></AvatarPopover>
+					))}
 				</Box>
 			</CardContent>
 			<CardContent
