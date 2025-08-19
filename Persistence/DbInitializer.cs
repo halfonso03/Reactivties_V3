@@ -18,8 +18,6 @@ public class DbInitializer
 
         if (!userManager.Users.Any())
         {
-
-
             foreach (var user in users)
             {
                 await userManager.CreateAsync(user, "Pa$$w0rd");
@@ -28,6 +26,29 @@ public class DbInitializer
             await context.SaveChangesAsync();
         }
 
+        if (!context.Photos.Any())
+        {
+            var photo = new Photo
+            {
+                Url = "https://media.posterstore.com/site_images/68631bd825436f8361d76854_1309055148_WB0038-5.jpg",
+                PublicId = "123",
+                UserId = context.Users.First(x => x.Email == "bob@test.com").Id
+            };
+
+            var photo2 = new Photo
+            {
+                Url = "https://comicbook.com/wp-content/uploads/sites/4/2023/09/ed577c74-ab44-45af-b2d0-c4d1ba9e0b20.jpg?resize=1024,541",
+                PublicId = "124",
+                UserId = context.Users.First(x => x.Email == "bob@test.com").Id
+            };
+
+
+            context.Photos.Add(photo);
+            context.Photos.Add(photo2);
+
+
+            await context.SaveChangesAsync();
+        }
 
         if (context.Activities.Any())
         {
@@ -263,6 +284,9 @@ public class DbInitializer
 
 
         context.Activities.AddRange(activities);
+
+
+
 
         await context.SaveChangesAsync();
     }

@@ -1,63 +1,104 @@
-import { useParams } from "react-router";
-import { useProfile } from "../../lib/hooks/useProfile";
+import { useParams } from 'react-router';
+import { useProfile } from '../../lib/hooks/useProfile';
 import {
-	Box,
-	Button,
-	ImageList,
-	ImageListItem,
-	Typography,
-} from "@mui/material";
-import { useState } from "react";
-import PhotoUploadWidget from "../../app/shared/components/PhotoUploadWidget";
+  Box,
+  Button,
+  ImageList,
+  ImageListItem,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
+import PhotoUploadWidget from '../../app/shared/components/PhotoUploadWidget';
+import StarButton from '../../app/shared/components/StarButton';
+import DeleteButton from '../../app/shared/components/DeleteButton';
 
 export default function ProfilePhotos() {
-	const { id } = useParams();
+  const { id } = useParams();
 
-	const { photos, loadingPhotos } = useProfile(id);
+  const {
+    photos,
+    loadingPhotos,
+    uploadPhoto,
+    profile,
+    setMainPhoto,
+    deletePhoto,
+  } = useProfile(id);
 
-	const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
-	if (loadingPhotos) return <Typography>Loading Photos...</Typography>;
+  const handlePhotoUpload = (file: Blob) => {
+    uploadPhoto.mutate(file, {
+      onSuccess: () => {
+        setEditMode(false);
+      },
+    });
+  };
 
-	if (!photos || photos.length === 0)
-		return <Typography>No photos found</Typography>;
+  if (loadingPhotos) return <Typography>Loading Photos...</Typography>;
 
-    const isCurrentUser = true;
+  if (!photos) return <Typography>No photos found</Typography>;
 
-	return (
-		<Box>
-			{isCurrentUser && (
-				<Box>
-					<Button onClick={() => setEditMode(!editMode)}>
-						{editMode ? "Cancel" : "Add Photo"}
-					</Button>
-				</Box>
-			)}
-			{editMode ? (
-				<PhotoUploadWidget></PhotoUploadWidget>
-			) : (
-				<ImageList
-					sx={{ height: 450 }}
-					cols={6}
-					rowHeight={164}>
-					{photos.map((item) => (
-						<ImageListItem key={item.id}>
-							<img
-								srcSet={`${item.url.replace(
-									"/upload/",
-									"/upload/w_164,h_164,c_fill,f_auto,dpr_2,g_face/"
-								)}`}
-								src={`${item.url.replace(
-									"/upload/",
-									"/upload/w_164,h_164,c_fill,f_auto,g_face/"
-								)}`}
-								alt={"user profile image"}
-								loading='lazy'
-							/>
-						</ImageListItem>
-					))}
-				</ImageList>
-			)}
-		</Box>
-	);
+  photos.map((p) => {
+    if (p.url == profile?.imageUrl) console.log('MATCH');
+  });
+  console.log(photos, profile?.imageUrl);
+
+  const isCurrentUser = true;
+
+  return (
+    <Box>
+      {isCurrentUser && (
+        <Box>
+          <Button onClick={() => setEditMode(!editMode)}>
+            {editMode ? 'Cancel' : 'Add Photo'}
+          </Button>
+        </Box>
+      )}
+      {editMode ? (
+        <PhotoUploadWidget
+          uploadPhoto={handlePhotoUpload}
+          loading={uploadPhoto.isPending}
+        ></PhotoUploadWidget>
+      ) : (
+        <ImageList sx={{ height: 450 }} cols={6} rowHeight={164}>
+          {photos.map((item) => (
+            <ImageListItem key={item.id}>
+              <img
+                srcSet={`${item.url.replace(
+                  '/upload/',
+                  '/upload/w_164,h_164,c_fill,f_auto,dpr_2,g_face/'
+                )}`}
+                src={`${item.url.replace(
+                  '/upload/',
+                  '/upload/w_164,h_164,c_fill,f_auto,g_face/'
+                )}`}
+                alt={'user profile image'}
+                loading="lazy"
+              />
+              {isCurrentUser && (
+                <div>
+                  <Box
+                    sx={{ position: 'absolute', top: 0, left: 0 }}
+                    onClick={() => setMainPhoto.mutate(item)}
+                  >
+                    <StarButton
+                      selected={item.url === profile?.imageUrl}
+                    ></StarButton>
+                  </Box>
+                  {profile?.imageUrl !== item.url && (
+                    <Box
+                      sx={{ position: 'absolute', top: 0, right: 0 }}
+                      onClick={() => deletePhoto.mutate(item.id)}
+                    >
+                      <DeleteButton></DeleteButton>
+                    </Box>
+                  )}
+                </div>
+              )}
+            </ImageListItem>
+          ))}
+        </ImageList>
+      )}
+    </Box>
+  );
 }
