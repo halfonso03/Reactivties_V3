@@ -12,13 +12,12 @@ export default function useAccount() {
 
 	const loginUser = useMutation({
 		mutationFn: async (creds: LoginSchema) => {
-			await agent.post(`/login?useCookies=true`, creds);
+			await agent.post("/login?useCookies=true", creds);
 		},
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
 				queryKey: ["user"],
 			});
-			console.log("sdsd");
 		},
 	});
 
