@@ -45,9 +45,10 @@ export default function useAccount() {
 		queryKey: ["user"],
 		queryFn: async () => {
 			const response = await agent.get<User>("/account/user-info");
+			console.log(response.data);
 			return response.data;
 		},
-		enabled: !queryClient.getQueryData(["user"])
+		enabled: !queryClient.getQueryData(["user"]),
 	});
 
 	return {

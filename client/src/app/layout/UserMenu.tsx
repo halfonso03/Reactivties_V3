@@ -12,6 +12,7 @@ import { useState } from "react";
 import useAccount from "../../lib/hooks/useAccount";
 import { Link } from "react-router";
 import { Add, Logout, Person } from "@mui/icons-material";
+import { useProfile } from "../../lib/hooks/useProfile";
 
 export default function UserMenu() {
 	const { logoutUser } = useAccount();
@@ -23,6 +24,8 @@ export default function UserMenu() {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
+	const { profile } = useProfile();
 
 	const { currentUser } = useAccount();
 
