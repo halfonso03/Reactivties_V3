@@ -39,5 +39,11 @@ public class ProfilesController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new SetMainPhoto.Command { PhotoId = photoId }));
     }
+    
+    [HttpPut]
+    public async Task<ActionResult> EditProfile([FromBody] EditProfileDto editProfileDto)
+    {
+        return HandleResult(await Mediator.Send(new EditProfile.Command { EditProfileDto = editProfileDto }));
+    }
 
 }

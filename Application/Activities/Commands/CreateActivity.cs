@@ -21,10 +21,7 @@ public class CreateActivity
     {
         public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
         {
-
             var user = await userAccessor.GetUserAsync();
-            
-            
             
             var activity = mapper.Map<Activity>(request.ActivityDto);
 

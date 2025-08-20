@@ -25,9 +25,8 @@ export default function UserMenu() {
 		setAnchorEl(null);
 	};
 
-	const { profile } = useProfile();
-
 	const { currentUser } = useAccount();
+	const { profile } = useProfile(currentUser?.id);
 
 	return (
 		<>
@@ -45,7 +44,7 @@ export default function UserMenu() {
 						alt={`image of host`}
 						sx={{ height: 50, width: 50 }}
 					/>
-					{currentUser?.displayName}
+					{profile?.displayName}
 				</Box>
 			</Button>
 			<Menu

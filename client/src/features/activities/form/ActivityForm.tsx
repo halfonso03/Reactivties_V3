@@ -10,18 +10,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextInput from "../../../app/shared/components/TextInput";
 import { useActivities } from "../../../lib/hooks/useActivities";
 import SelectInput from "../../../app/shared/components/SelectInput";
-import { categoryOptions } from "./ategoryOptions";
+import { categoryOptions } from "./categoryOptions";
 import LocationInput from "../../../app/shared/components/LocationInput";
 import DateTimeInput from "../../../app/shared/components/DateTimeInput";
-import { Activity } from "../../../lib/types";
 
 export default function ActivityForm() {
-	const { reset, control, handleSubmit, formState } = useForm<ActivitySchema>(
-		{
-			mode: "onTouched",
-			resolver: zodResolver(activitySchema),
-		}
-	);
+	const { reset, control, handleSubmit } = useForm<ActivitySchema>({
+		mode: "onTouched",
+		resolver: zodResolver(activitySchema),
+	});
 	const navigate = useNavigate();
 	const { createActivity, updateActivity, activity, isActivityLoading } =
 		useActivities(useParams().id);

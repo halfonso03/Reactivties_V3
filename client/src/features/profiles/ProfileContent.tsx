@@ -1,6 +1,6 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Paper, Box } from "@mui/material";
+import { Paper, Box, Typography } from "@mui/material";
 import { useState } from "react";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileAbout from "./ProfileAbout";
@@ -12,8 +12,13 @@ type Props = {
 export default function ProfileContent({ profile }: Props) {
 	const [value, setValue] = useState(0);
 
+	if (!profile) return <Typography>Profile not found.</Typography>;
+
 	const tabContent = [
-		{ label: "About", content: <ProfileAbout></ProfileAbout> },
+		{
+			label: "About",
+			content: <ProfileAbout></ProfileAbout>,
+		},
 		{ label: "Photos", content: <ProfilePhotos></ProfilePhotos> },
 		{ label: "Events", content: <div>Events</div> },
 		{ label: "Followers", content: <div>Followers</div> },

@@ -9,12 +9,16 @@ import {
 	Stack,
 	Typography,
 } from "@mui/material";
+import { useProfile } from "../../lib/hooks/useProfile";
+import { useParams } from "react-router";
 
-type Props = {
-	profile: Profile | undefined;
-};
+// type Props = {
+// 	profile: Profile | undefined;
+// };
 
-export default function ProfileHeader({ profile }: Props) {
+export default function ProfileHeader() {
+	const { id } = useParams();
+	const { profile } = useProfile(id);
 	const isFollowing = true;
 	return (
 		<Paper

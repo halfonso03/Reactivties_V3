@@ -29,5 +29,7 @@ public class MappingProfiles : Profile
             .ForMember(x => x.Id, o => o.MapFrom(s => s.User.Id));
 
         CreateMap<User, UserProfile>();
+        CreateMap<EditProfileDto, User>();
+        
     }
 }

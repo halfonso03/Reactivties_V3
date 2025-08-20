@@ -35,8 +35,10 @@ export default function useAccount() {
 			agent.post("/account/logout");
 		},
 		onSuccess: async () => {
-			queryClient.removeQueries({ queryKey: ["user"] });
-			queryClient.removeQueries({ queryKey: ["activities"] });
+			queryClient.removeQueries();
+			// queryClient.removeQueries({ queryKey: ["user"] });
+			// queryClient.removeQueries({ queryKey: ["activities"] });
+			// queryClient.removeQueries({ queryKey: ["profile"] });
 			navigate("/");
 		},
 	});
