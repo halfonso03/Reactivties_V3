@@ -16,7 +16,7 @@ type Props = {
 
 export default function ActivityDetailsSidebar({ activity }: Props) {
 	const following = true;
-	console.log("activyt", activity);
+	//g("activyt", activity);
 	return (
 		<>
 			<Paper

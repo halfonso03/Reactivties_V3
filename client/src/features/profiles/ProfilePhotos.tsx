@@ -42,7 +42,7 @@ export default function ProfilePhotos() {
 	photos.map((p) => {
 		if (p.url == profile?.imageUrl) console.log("MATCH");
 	});
-	console.log(photos, profile?.imageUrl);
+	// console.log(photos, profile?.imageUrl);
 
 	const isCurrentUser = true;
 

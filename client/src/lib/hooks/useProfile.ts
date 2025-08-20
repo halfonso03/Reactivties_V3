@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { EditProfileSchema } from "../schemas/editProfileSchema";
 
 export const useProfile = (id?: string) => {
-	const queryClient = new QueryClient();
+	const queryClient = useMemo(() => new QueryClient(), []);
 
 	const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({
 		queryKey: ["profile", id],
@@ -41,8 +41,8 @@ export const useProfile = (id?: string) => {
 			await queryClient.setQueryData(
 				["profile", id],
 				(oldProfile: Profile) => {
-					console.log("id", id);
-					console.log("data", oldProfile);
+					// console.log("id", id);
+					// console.log("data", oldProfile);
 					if (!oldProfile) return oldProfile;
 					return {
 						...oldProfile,
@@ -87,7 +87,7 @@ export const useProfile = (id?: string) => {
 
 	const setMainPhoto = useMutation({
 		mutationFn: async (photo: Photo) => {
-			console.log(`/profiles/${photo.id}/setMain`);
+			// console.log(`/profiles/${photo.id}/setMain`);
 			await agent.put(`/profiles/${photo.id}/setMain`);
 		},
 		onSuccess: (_, photo) => {

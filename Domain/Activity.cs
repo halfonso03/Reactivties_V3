@@ -4,7 +4,7 @@ namespace Domain;
 
 public class Activity
 {
-   
+
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public required string Title { get; set; }
     public DateTime Date { get; set; }
@@ -20,5 +20,8 @@ public class Activity
 
     // navigation properties
     public ICollection<ActivityAttendee> Attendees { get; set; } = [];
+
+    public ICollection<Comment> Comments { get; set; } = [];
     
+
 }

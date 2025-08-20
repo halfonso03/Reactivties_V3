@@ -119,16 +119,16 @@ export const useActivities = (id?: string) => {
 							? isHost
 								? oldActivity.attendees
 								: oldActivity.attendees.filter(
-										(x) => x.id !== currentUser.id
-								  )
+									(x) => x.id !== currentUser.id
+								)
 							: [
-									...oldActivity.attendees,
-									{
-										id: currentUser.id,
-										displayName: currentUser.displayName,
-										imageUrl: currentUser.imageUrl,
-									},
-							  ],
+								...oldActivity.attendees,
+								{
+									id: currentUser.id,
+									displayName: currentUser.displayName,
+									imageUrl: currentUser.imageUrl,
+								},
+							],
 					};
 				}
 			);
@@ -136,8 +136,7 @@ export const useActivities = (id?: string) => {
 			return { prevActivity };
 		},
 		onError: (error, activityId, context) => {
-			console.log("prevActivity" + context?.prevActivity);
-			console.log(error);
+			console.log('error', error);
 			if (context?.prevActivity) {
 				queryClient.setQueryData(
 					["activities", activityId],
