@@ -4,14 +4,14 @@ import { Paper, Box, Typography } from "@mui/material";
 import { useState } from "react";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileAbout from "./ProfileAbout";
+import ProfileFollowings from "./ProfileFollowings";
+import { useProfile } from "../../lib/hooks/useProfile";
+import { useParams } from "react-router";
 
-type Props = {
-	profile: Profile | undefined;
-};
-
-export default function ProfileContent({ profile }: Props) {
+export default function ProfileContent() {
 	const [value, setValue] = useState(0);
-
+	const { id } = useParams();
+	const { profile } = useProfile(id);
 	if (!profile) return <Typography>Profile not found.</Typography>;
 
 	const tabContent = [
@@ -21,8 +21,14 @@ export default function ProfileContent({ profile }: Props) {
 		},
 		{ label: "Photos", content: <ProfilePhotos></ProfilePhotos> },
 		{ label: "Events", content: <div>Events</div> },
-		{ label: "Followers", content: <div>Followers</div> },
-		{ label: "Following", content: <div>Following</div> },
+		{
+			label: "Followers",
+			content: <ProfileFollowings activeTab={value} />,
+		},
+		{
+			label: "Following",
+			content: <ProfileFollowings activeTab={value} />,
+		},
 	];
 
 	const handleChange = (_: React.SyntheticEvent, newValue: number) => {

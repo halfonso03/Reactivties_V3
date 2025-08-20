@@ -19,7 +19,7 @@ import { useParams } from 'react-router';
 export default function ProfileHeader() {
   const { id } = useParams();
   const { profile, updateFollowing, isCurrentUser } = useProfile(id);
-  console.log(isCurrentUser);
+  
   if (!profile) return null;
 
   return (

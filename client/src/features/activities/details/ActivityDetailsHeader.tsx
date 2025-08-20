@@ -65,7 +65,7 @@ export default function ActivityDetailsHeader({ activity }: Props) {
 					<Typography variant='subtitle2'>
 						Hosted by{" "}
 						<Link
-							to={`/profile/${activity.hostId}`}
+							to={`/profiles/${activity.hostId}`}
 							style={{ color: "white", fontWeight: "bold" }}>
 							{activity.hostDisplayedName}
 						</Link>

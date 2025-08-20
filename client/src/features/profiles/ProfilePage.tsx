@@ -17,7 +17,7 @@ export default function ProfilePage() {
     <Grid2>
       <Grid2 size={12}>
         <ProfileHeader></ProfileHeader>
-        <ProfileContent profile={profile}></ProfileContent>
+        <ProfileContent ></ProfileContent>
       </Grid2>
     </Grid2>
   );

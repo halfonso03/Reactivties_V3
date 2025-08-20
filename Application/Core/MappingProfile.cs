@@ -39,7 +39,7 @@ public class MappingProfiles : Profile
             .ForMember(d => d.FollowersCount, o => o.MapFrom(s => s.Followers.Count))
             .ForMember(d => d.FollowingCount, o => o.MapFrom(s => s.Followings.Count))
             .ForMember(d => d.Following,
-                o => o.MapFrom(s => s.Followings.Any(x => x.Observer.Id == currentUserId)));
+                o => o.MapFrom(s => s.Followers.Any(x => x.Observer.Id == currentUserId)));
 
         CreateMap<EditProfileDto, User>();
 

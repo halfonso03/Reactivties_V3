@@ -68,7 +68,7 @@ export default function UserMenu() {
 				</MenuItem>
 				<MenuItem
 					component={Link}
-					to={`/profile/${currentUser?.id}`}
+					to={`/profiles/${currentUser?.id}`}
 					onClick={handleClose}>
 					<ListItemIcon>
 						<Person></Person>
