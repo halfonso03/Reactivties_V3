@@ -1,24 +1,24 @@
-import { Grid2, Typography } from "@mui/material";
-import ProfileHeader from "./ProfileHeader";
-import ProfileContent from "./ProfileContent";
-import { useParams } from "react-router";
-import { useProfile } from "../../lib/hooks/useProfile";
+import { Grid2, Typography } from '@mui/material';
+import ProfileHeader from './ProfileHeader';
+import ProfileContent from './ProfileContent';
+import { useParams } from 'react-router';
+import { useProfile } from '../../lib/hooks/useProfile';
 
 export default function ProfilePage() {
-	const { id } = useParams();
+  const { id } = useParams();
 
-	const { profile, loadingProfile } = useProfile(id);
+  const { profile, loadingProfile } = useProfile(id);
 
-	if (loadingProfile) return <Typography>Loading...</Typography>;
+  if (loadingProfile) return <Typography>Loading...</Typography>;
 
-	if (!profile) return <Typography>Profile not found</Typography>;
+  if (!profile) return <Typography>Profile not found</Typography>;
 
-	return (
-		<Grid2>
-			<Grid2 size={12}>
-				<ProfileHeader></ProfileHeader>
-				<ProfileContent profile={profile}></ProfileContent>
-			</Grid2>
-		</Grid2>
-	);
+  return (
+    <Grid2>
+      <Grid2 size={12}>
+        <ProfileHeader></ProfileHeader>
+        <ProfileContent profile={profile}></ProfileContent>
+      </Grid2>
+    </Grid2>
+  );
 }

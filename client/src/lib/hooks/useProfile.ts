@@ -25,6 +25,23 @@ export const useProfile = (id?: string) => {
 		enabled: !!id,
 	});
 
+
+	const updateFollowing = useMutation({
+		mutationFn: async () => {
+			await agent.post(`/profiles/${id}/follow`)
+		},
+		onSuccess: () => {
+			queryClient.setQueryData(['profile', id], (profile: Profile) => {
+				if (!profile || profile.followersCount === undefined) return profile;
+				return {
+					...profile, following: !profile.following, followersCount: profile.following ?
+						profile.followersCount - 1 : profile.followersCount + 1
+				}
+			})
+		}
+
+	});
+
 	const editProfile = useMutation({
 		mutationFn: async (profile: EditProfileSchema) => {
 			await agent.put(`/profiles`, profile);
@@ -133,5 +150,6 @@ export const useProfile = (id?: string) => {
 		setMainPhoto,
 		deletePhoto,
 		editProfile,
+		updateFollowing
 	};
 };
