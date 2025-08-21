@@ -1,7 +1,9 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain;
 
+[Index(nameof(Date))]
 public class Activity
 {
 
@@ -22,6 +24,6 @@ public class Activity
     public ICollection<ActivityAttendee> Attendees { get; set; } = [];
 
     public ICollection<Comment> Comments { get; set; } = [];
-    
+
 
 }
