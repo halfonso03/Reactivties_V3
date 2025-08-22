@@ -7,6 +7,7 @@ import ProfileAbout from "./ProfileAbout";
 import ProfileFollowings from "./ProfileFollowings";
 import { useProfile } from "../../lib/hooks/useProfile";
 import { useParams } from "react-router";
+import ProfileEvents from "./ProfileEvents";
 
 export default function ProfileContent() {
 	const [value, setValue] = useState(0);
@@ -20,7 +21,7 @@ export default function ProfileContent() {
 			content: <ProfileAbout></ProfileAbout>,
 		},
 		{ label: "Photos", content: <ProfilePhotos></ProfilePhotos> },
-		{ label: "Events", content: <div>Events</div> },
+		{ label: "Events", content: <ProfileEvents></ProfileEvents> },
 		{
 			label: "Followers",
 			content: <ProfileFollowings activeTab={value} />,

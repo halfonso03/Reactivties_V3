@@ -62,5 +62,11 @@ public class ProfilesController : BaseApiController
             Predicate = predicate
         }));
     }
+    
+    [HttpGet("{userId}/activities")]
+    public async Task<ActionResult<List<UserActivityDto>>> GetUserActivities(string userId, [FromQuery]string filter)
+    {
+        return HandleResult(await Mediator.Send(new GetUserActivities.Query() { UserId = userId, Predicate = filter }));
+    }
 
 }

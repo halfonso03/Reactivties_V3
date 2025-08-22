@@ -38,6 +38,20 @@ export const useProfile = (id?: string, predicate?: string) => {
 		enabled: !!id && !!predicate,
 	});
 
+	const { data: userActivities, isLoading: loadingUserActivities } = useQuery<
+		Activity[]
+	>({
+		queryKey: ["useractivities", id, predicate],
+		queryFn: async () => {
+			console.log("predicate", predicate);
+			const response = await agent.get<Activity[]>(
+				`/profiles/${id}/activities?filter=${predicate}`
+			);
+			return response.data;
+		},
+		enabled: !!id && !!predicate,
+	});
+
 	const updateFollowing = useMutation({
 		mutationFn: async () => {
 			await agent.post(`/profiles/${id}/follow`);
@@ -171,5 +185,7 @@ export const useProfile = (id?: string, predicate?: string) => {
 		updateFollowing,
 		followings,
 		loadingFollowings,
+		userActivities,
+		loadingUserActivities,
 	};
 };
