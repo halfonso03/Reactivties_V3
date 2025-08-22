@@ -43,7 +43,6 @@ export const useProfile = (id?: string, predicate?: string) => {
 	>({
 		queryKey: ["useractivities", id, predicate],
 		queryFn: async () => {
-			console.log("predicate", predicate);
 			const response = await agent.get<Activity[]>(
 				`/profiles/${id}/activities?filter=${predicate}`
 			);
