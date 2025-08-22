@@ -22,9 +22,7 @@ export default function ProfileEventsList({ filter }: Props) {
 			<CircularProgress
 				size={24}
 				sx={{ marginTop: 3, marginLeft: 2 }}
-				thickness={7}>
-				Loading Users Activities
-			</CircularProgress>
+				thickness={7}></CircularProgress>
 		);
 
 	return (
