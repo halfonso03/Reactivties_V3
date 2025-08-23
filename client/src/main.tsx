@@ -15,7 +15,7 @@ import { store, StoreContext } from "./lib/util/stores/store.ts";
 import { ToastContainer } from "react-toastify";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x or v4.x, please import `AdapterDateFns`
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 // If you are using date-fns v2.x, please import the v2 adapter
 const queryClient = new QueryClient();
 

@@ -1,41 +1,59 @@
-import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	keepPreviousData,
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
 import useAccount from "./useAccount";
 import { useStore } from "./useStore";
+import { FieldValues } from "react-hook-form";
 
 export const useActivities = (id?: string) => {
-	const { activityStore: { filter, startDate } } = useStore();
+	const {
+		activityStore: { filter, startDate },
+	} = useStore();
 
 	const queryClient = useQueryClient();
 	const location = useLocation();
 	const { currentUser } = useAccount();
 
-	const { data: activitiesGroup, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery<PagedList<Activity, string>>({
+	const {
+		data: activitiesGroup,
+		isLoading,
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+	} = useInfiniteQuery<PagedList<Activity, string>>({
 		queryKey: ["activities", filter, startDate],
 		queryFn: async ({ pageParam = null }) => {
-			const response = await agent.get<PagedList<Activity, string>>("/activities", {
-				params: {
-					cursor: pageParam,
-					pageSize: 3,
-					filter,
-					startDate
+			const response = await agent.get<PagedList<Activity, string>>(
+				"/activities",
+				{
+					params: {
+						cursor: pageParam,
+						pageSize: 3,
+						filter,
+						startDate,
+					},
 				}
-			});
+			);
 			return response.data;
 		},
 		initialPageParam: null,
-		staleTime: 1000 * 60 * 5,
 		placeholderData: keepPreviousData,
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 		enabled: !id && location.pathname === "/activities" && !!currentUser,
 		select: (data) => ({
-
 			...data,
 			pages: data.pages.map((page) => ({
 				...page,
 				items: page.items.map((activity: Activity) => {
-					const host = activity.attendees.find(x => x.id === activity.hostId);
+					const host = activity.attendees.find(
+						(x) => x.id === activity.hostId
+					);
 					return {
 						...activity,
 						isHost: currentUser?.id === activity.hostId,
@@ -44,10 +62,8 @@ export const useActivities = (id?: string) => {
 						),
 						hostImageUrl: host?.imageUrl,
 					};
-				})
-			}))
-
-
+				}),
+			})),
 		}),
 	});
 
@@ -63,7 +79,7 @@ export const useActivities = (id?: string) => {
 	});
 
 	const createActivity = useMutation({
-		mutationFn: async (activity: Activity) => {
+		mutationFn: async (activity: FieldValues) => {
 			const response = await agent.post("/activities", activity);
 			return response.data;
 		},
@@ -117,9 +133,9 @@ export const useActivities = (id?: string) => {
 				activityId,
 			]);
 
-			queryClient.setQueryData<Activity>(
+			queryClient.setQueryData(
 				["activities", activityId],
-				(oldActivity) => {
+				(oldActivity: Activity) => {
 					if (!oldActivity || !currentUser) {
 						return oldActivity;
 					}
@@ -138,16 +154,16 @@ export const useActivities = (id?: string) => {
 							? isHost
 								? oldActivity.attendees
 								: oldActivity.attendees.filter(
-									(x) => x.id !== currentUser.id
-								)
+										(x) => x.id !== currentUser.id
+								  )
 							: [
-								...oldActivity.attendees,
-								{
-									id: currentUser.id,
-									displayName: currentUser.displayName,
-									imageUrl: currentUser.imageUrl,
-								},
-							],
+									...oldActivity.attendees,
+									{
+										id: currentUser.id,
+										displayName: currentUser.displayName,
+										imageUrl: currentUser.imageUrl,
+									},
+							  ],
 					};
 				}
 			);
@@ -155,7 +171,7 @@ export const useActivities = (id?: string) => {
 			return { prevActivity };
 		},
 		onError: (error, activityId, context) => {
-			console.log('error', error);
+			console.log("error", error);
 			if (context?.prevActivity) {
 				queryClient.setQueryData(
 					["activities", activityId],
@@ -178,6 +194,6 @@ export const useActivities = (id?: string) => {
 		isActivityLoading,
 		updateAttendance,
 		filter,
-		startDate
+		startDate,
 	};
 };

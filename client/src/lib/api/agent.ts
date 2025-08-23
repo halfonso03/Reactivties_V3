@@ -13,7 +13,10 @@ const agent = axios.create({
 
 agent.interceptors.request.use(async (config) => {
 	store.uiStore.isBusy();
-	await sleep(1);
+
+	if (import.meta.env.DEV) {
+		await sleep(1000);
+	}
 	return config;
 });
 

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { EditProfileSchema } from "../schemas/editProfileSchema";
 
 export const useProfile = (id?: string, predicate?: string) => {
-	const queryClient = useMemo(() => new QueryClient(), []);
+	const queryClient = new QueryClient();
 
 	const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({
 		queryKey: ["profile", id],

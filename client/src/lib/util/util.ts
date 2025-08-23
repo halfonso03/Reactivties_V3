@@ -7,10 +7,9 @@ export function formatDate(date: Date) {
 
 export const requiredString = (fieldName: string) =>
 	z
-		.string({ required_error: `${fieldName} is required` })
-		.min(1, { message: `${fieldName} is required` });
-
+		.string({ error: `${fieldName} is required` })
+		.min(1, { error: `${fieldName} is required` });
 
 export function timeAgo(date: DateArg<Date>) {
-	return formatDistanceToNow(date) + ' ago';
+	return formatDistanceToNow(date) + " ago";
 }
