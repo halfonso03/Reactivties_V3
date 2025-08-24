@@ -24,9 +24,40 @@ export default function useAccount() {
 		mutationFn: async (creds: RegisterSchema) => {
 			await agent.post("/account/register", creds);
 		},
+	});
+
+	const verifyEmail = useMutation({
+		mutationFn: async ({
+			userId,
+			code,
+		}: {
+			userId: string;
+			code: string;
+		}) => {
+			await agent.get(`/confirmEmail?userId=${userId}&code=${code}`);
+		},
+	});
+
+	const resendConfirmationEmail = useMutation({
+		mutationFn: async ({
+			email,
+			userId,
+		}: {
+			email?: string;
+			userId?: string | null;
+		}) => {
+			await agent.get(`/account/resendConfirmEmail`, {
+				params: {
+					email,
+					userId,
+				},
+			});
+		},
 		onSuccess: () => {
-			toast.success("Register successful - you can now login");
-			navigate("/login");
+			toast.success("Email sent. Please check your email");
+		},
+		onError: () => {
+			toast.error("Unauthorized");
 		},
 	});
 
@@ -59,5 +90,7 @@ export default function useAccount() {
 		logoutUser,
 		currentUser,
 		loadingUserInfo,
+		verifyEmail,
+		resendConfirmationEmail,
 	};
 }
