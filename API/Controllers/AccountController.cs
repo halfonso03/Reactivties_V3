@@ -77,6 +77,7 @@ public class AccountController(SignInManager<User> signInManager, IEmailSender<U
         return Ok();
     }
 
+
     [AllowAnonymous]
     [HttpGet("user-info")]
     public async Task<ActionResult> GetUserInfo() 
@@ -102,5 +103,20 @@ public class AccountController(SignInManager<User> signInManager, IEmailSender<U
         await signInManager.SignOutAsync();
 
         return NoContent();
+    }
+    
+    [HttpPost("change-password")]
+    public async Task<ActionResult> ChangePassword(ChangePasswordDto passwordDto)
+    {
+        var user = await signInManager.UserManager.GetUserAsync(User);
+
+        if (user == null) return Unauthorized();
+
+        var result = await signInManager.UserManager
+            .ChangePasswordAsync(user, passwordDto.CurrentPassword, passwordDto.NewPassword);
+
+        if (result.Succeeded) return Ok();
+
+        return BadRequest(result.Errors.First().Description);
     }
 }
