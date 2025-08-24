@@ -49,7 +49,12 @@ agent.interceptors.response.use(
 				break;
 			}
 			case 401: {
-				toast.error("Unauthorized");
+				if (data.detail === "NotAllowed") {
+					throw new Error(data.detail);
+				} else {
+					toast.error("Unauthorised");
+				}
+				throw new Error(data.detail);
 				break;
 			}
 			case 404: {
