@@ -1,7 +1,7 @@
 type PagedList<T, TCursor> = {
-	items: T[],
-	nextCursor: TCursor
-}
+	items: T[];
+	nextCursor: TCursor;
+};
 
 type Activity = {
 	id: string;
@@ -34,7 +34,7 @@ type Profile = {
 	imageUrl: string;
 	followersCount?: number;
 	followingCount?: number;
-	following?: boolean
+	following?: boolean;
 };
 
 type LocationIQSuggestion = {
@@ -75,12 +75,17 @@ type User = {
 	imageUrl?: string;
 };
 
-
 type ChatComment = {
-	id: string
-	createdAt: Date
-	body: string
-	userId: string
-	displayName: string
-	imageUrl?: string
-}
+	id: string;
+	createdAt: Date;
+	body: string;
+	userId: string;
+	displayName: string;
+	imageUrl?: string;
+};
+
+type ResetPassword = {
+	email: string;
+	resetCode: string;
+	newPassword: string;
+};
